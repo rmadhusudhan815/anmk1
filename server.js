@@ -1,0 +1,12 @@
+const express=require("express"),fs=require("fs"),path=require("path");
+const app=express(),PORT=process.env.PORT||3000;
+const productsFile=path.join(__dirname,"data/products.json"),ordersFile=path.join(__dirname,"data/orders.json");
+app.use(express.json());app.use(express.static(path.join(__dirname,"public")));
+const read=(f,d)=>{try{return JSON.parse(fs.readFileSync(f,"utf8"))}catch{return d}};
+const write=(f,v)=>fs.writeFileSync(f,JSON.stringify(v,null,2));
+app.get("/api/products",(req,res)=>{let p=read(productsFile,[]),q=String(req.query.q||"").toLowerCase(),c=String(req.query.category||"");res.json(p.filter(x=>(!q||x.name.toLowerCase().includes(q))&&(!c||x.category===c)))});
+app.get("/api/categories",(_,res)=>res.json([...new Set(read(productsFile,[]).map(x=>x.category))]));
+app.post("/api/orders",(req,res)=>{const {customer,items,paymentMethod}=req.body||{};if(!customer?.name||!customer?.phone||!customer?.address)return res.status(400).json({error:"Name, phone and address are required."});if(!Array.isArray(items)||!items.length)return res.status(400).json({error:"Your cart is empty."});const products=read(productsFile,[]);let total=0,orderItems=[];for(const i of items){const p=products.find(x=>x.id===Number(i.productId)),qty=Number(i.quantity);if(!p||!Number.isInteger(qty)||qty<1)return res.status(400).json({error:"Invalid product or quantity."});if(qty>p.stock)return res.status(400).json({error:p.name+" has only "+p.stock+" in stock."});const line=p.price*qty;total+=line;orderItems.push({productId:p.id,name:p.name,quantity:qty,unitPrice:p.price,lineTotal:line});}orderItems.forEach(i=>products.find(p=>p.id===i.productId).stock-=i.quantity);write(productsFile,products);const order={id:"ORD-"+Date.now(),customer,items:orderItems,total,paymentMethod:paymentMethod||"Cash on Delivery",status:"Confirmed",createdAt:new Date().toISOString()};const orders=read(ordersFile,[]);orders.push(order);write(ordersFile,orders);res.status(201).json(order)});
+app.get("/api/orders/:id",(req,res)=>{const o=read(ordersFile,[]).find(x=>x.id===req.params.id);o?res.json(o):res.status(404).json({error:"Order not found."})});
+app.get("*",(_,res)=>res.sendFile(path.join(__dirname,"public/index.html")));
+app.listen(PORT,()=>console.log("FreshCart running at http://localhost:"+PORT));
