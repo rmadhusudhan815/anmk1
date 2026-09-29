@@ -1,0 +1,14 @@
+[
+{"id":1,"name":"Fresh Bananas","category":"Fruits","price":45,"unit":"kg","stock":30,"emoji":"🍌"},
+{"id":2,"name":"Red Apples","category":"Fruits","price":160,"unit":"kg","stock":20,"emoji":"🍎"},
+{"id":3,"name":"Tomatoes","category":"Vegetables","price":55,"unit":"kg","stock":25,"emoji":"🍅"},
+{"id":4,"name":"Potatoes","category":"Vegetables","price":42,"unit":"kg","stock":40,"emoji":"🥔"},
+{"id":5,"name":"Fresh Milk","category":"Dairy","price":32,"unit":"500 ml","stock":50,"emoji":"🥛"},
+{"id":6,"name":"Farm Eggs","category":"Dairy","price":72,"unit":"6 pcs","stock":35,"emoji":"🥚"},
+{"id":7,"name":"Basmati Rice","category":"Staples","price":180,"unit":"kg","stock":25,"emoji":"🍚"},
+{"id":8,"name":"Wheat Flour","category":"Staples","price":65,"unit":"kg","stock":30,"emoji":"🌾"},
+{"id":9,"name":"Sunflower Oil","category":"Staples","price":145,"unit":"1 L","stock":24,"emoji":"🫗"},
+{"id":10,"name":"Orange Juice","category":"Beverages","price":110,"unit":"1 L","stock":18,"emoji":"🧃"},
+{"id":11,"name":"Potato Chips","category":"Snacks","price":35,"unit":"pack","stock":45,"emoji":"🥔"},
+{"id":12,"name":"Dark Chocolate","category":"Snacks","price":90,"unit":"bar","stock":28,"emoji":"🍫"}
+]
